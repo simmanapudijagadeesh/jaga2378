@@ -1,0 +1,15 @@
+import pandas as pd
+df=pd.read_CSV("titanic.CSV")
+
+df.drop(['id','name','sibsp','ticket','cabin','embarked'],axis='columns',inplace=True)
+inputs=df.drop('survived',axis='columns')
+dummies=pd.get_dummies(inputs.sex)
+inputs=pd.concat([inputs,dummies],axis='columns')
+inputs.drop('sex',axis='columns',inplace=True)
+x_train,y_train,x_test,y_test=train_test_split(inputs,target,target_size=0.2)
+model=GaussianNB()
+model.fit(x_train,y_train)
+score=model.score(x_test,y_test)
+print(f'model accuracy: {score}')
+predictions=model.predict(x_test[:10])
+print('predictions for the first 10 test entries:',predictions)
